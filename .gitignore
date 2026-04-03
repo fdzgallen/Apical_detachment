@@ -1,0 +1,30 @@
+# Compiled files
+*.jl.cov
+*.jl.*.cov
+*.jl.mem
+/deps/deps.jl
+
+# Build artifacts
+/build/
+/dist/
+
+# Documenter build files
+/docs/build/
+/docs/site/
+
+# Test coverage
+/coverage/
+
+# Local IDE/editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Julia environment files
+Manifest.toml
+
+# OS-specific files
+.DS_Store
+*.o
