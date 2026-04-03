@@ -40,9 +40,9 @@ function run(χ, λ⁻², η, T, Δt, part)
     Δx = L/partition
 
     # Lets write down some parameters in a txt just in case 
-    pVTU="./VTU/"*simulation
+    pVTU="./output/"*simulation*"/VTU/"
     mkpath(pVTU)
-    pPNG="./PNG/"*simulation
+    pPNG="./output/"*simulation*"/"
     mkpath(pPNG)
     mkpath(pPNG*"ezrin_time/")
     mkpath(pPNG*"ezrin_unbound_time/")
@@ -331,13 +331,7 @@ setsx=2
 
 #output folder name
 len=trunc(λ, digits = 2)
-simulation = "Apical_detachment/T=$T deltat=$Δt/v4/ten_max=$ten_max k0=$k0 eb=$eb kBT=$kBT freq=$ω friction=$χ visco_memb=$ηₘ η=$η k=$k M0=$M0/"
-#store VTUs in one folder
-pVTU="./VTU/"*simulation
-mkpath(pVTU)
-#Store PNGs in another
-pPNG="./PNG/"*simulation
-mkpath(pPNG)
+simulation = "T=$T deltat=$Δt/v4/ten_max=$ten_max k0=$k0 eb=$eb kBT=$kBT freq=$ω friction=$χ visco_memb=$ηₘ η=$η k=$k M0=$M0/"
 print("Simulation name: "*simulation*"\n")
 
 #IF we run multiple simulations with changing parameters, we use this arrays to store the results of each simulation
@@ -354,17 +348,20 @@ v2 = zeros(setsx, setsv, Int32(T/Δt)+1, partition-1)
 αt = zeros(setsx, setsv, Int32(T/Δt)+1, partition)
 βt = zeros(setsx, setsv, Int32(T/Δt)+1, partition)
 
+λ⁻² = 1/(λ*λ)
+run(χ, λ⁻², η, T, Δt, partition)
+
 #FOR for the possible multiple simulations
-for i = 2:1:setsx
-    for j = 1:1:setsv
-        # χ = 2*10^((i))    # [pN s/um^3] friction coefficient
-        # χ = trunc(χ,digits=2)
-        λ⁻² = 1/(λ*λ)
-        xχ[i]=χ
-        #η= 0+0*j+10^(1*(j+1))              # [pN s/ um] 2D viscosity of the cortex
-        lη = η
-        xη[j]=lη
-        tension[i, j, :, :], ρ_b[i, j, :, :], v[i, j, :, :] =
-            run(χ, λ⁻², lη, T, Δt, partition)
-    end
-end
+# for i = 2:1:setsx
+#     for j = 1:1:setsv
+#         χ = 2*10^((i))    # [pN s/um^3] friction coefficient
+#         χ = trunc(χ,digits=2)
+#         λ⁻² = 1/(λ*λ)
+#         xχ[i]=χ
+#         η= 0+0*j+10^(1*(j+1))              # [pN s/ um] 2D viscosity of the cortex
+#         lη = η
+#         xη[j]=lη
+#         tension[i, j, :, :], ρ_b[i, j, :, :], v[i, j, :, :] =
+#             run(χ, λ⁻², lη, T, Δt, partition)
+#     end
+# end
